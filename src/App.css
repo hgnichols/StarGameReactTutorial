@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -31,10 +32,6 @@
   }
 }
 
-.mountNode {
-  color: #333;
-}
-
 .fa-star {
 	margin: 0.5em;
   font-size: 24px;
@@ -44,4 +41,16 @@ span {
   margin: 0.5em;
   text-align: center;
   background-color: #ccc;
+  width: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.selected {
+	background-color: #eee;
+  color: #ddd;
+  cursor: not-allowed;
+}
+.unavailable {
+	background-color: #aaddaa;
+  color: #99bb99;
 }
