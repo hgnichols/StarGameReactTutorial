@@ -30,3 +30,18 @@
     transform: rotate(360deg);
   }
 }
+
+.mountNode {
+  color: #333;
+}
+
+.fa-star {
+	margin: 0.5em;
+  font-size: 24px;
+}
+span {
+	display: inline-block;
+  margin: 0.5em;
+  text-align: center;
+  background-color: #ccc;
+}
