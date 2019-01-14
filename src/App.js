@@ -125,7 +125,7 @@ const DoneFrame = (props) => {
 const Timer = (props) => {
   return(
     <div className="col">
-      <h3>Time Remaining: {props.time}</h3>
+      <h3>Time Remaining: {props.calculateSecondsAsMMSS(props.time)}</h3>
     </div>
   );
 };
@@ -133,12 +133,13 @@ class Game extends React.Component {
   static randomNumber = () =>  1 + Math.floor(Math.random()*9);
   static initialState = () => ({
     selectedNumbers: [],
-    randomNumberOfStars: Game.randomNumber(),
+    randomNumberOfStars: 0,
     usedNumbers: [],
     answerIsCorrect: null, 
     redraws: 20,
     doneStatus: null,
-    timerTime: '05:00',
+    timerTime: 60,
+    gamestarted: false,
   });
 
 	state = Game.initialState();
@@ -198,19 +199,41 @@ class Game extends React.Component {
       }
     });
   };
+  startTimer = () => {
+    this.setState(() => ({
+      gameStarted: true,
+      randomNumberOfStars: Game.randomNumber(),
+    }));
+    this.timerTime = setInterval(() => this.setState({
+      timerTime: this.state.timerTime - 1
+    }), 1000)
+  }
+  stopTimer() {
+    clearInterval(this.timer)
+  }
+  resetTimer() {
+    this.setState({time: 0})
+  }
+  calculateSecondsAsMMSS = (timeInSeconds) => {
+    var hours = timeInSeconds / 60;
+    var seconds = timeInSeconds % 60;
+    return ("0" + Math.floor(hours)).slice(-2) + ':' + ("0" + seconds).slice(-2);
+  }
 
 	render() {
-  	const {selectedNumbers, randomNumberOfStars, answerIsCorrect, usedNumbers, redraws, doneStatus, timerTime,} = this.state;
+    const {selectedNumbers, randomNumberOfStars, answerIsCorrect, usedNumbers, redraws, doneStatus, timerTime, gameStarted} = this.state;
   	return (
     	<div className="container">
+        <br />
         <div className="row">
           <h3 className="col"></h3>
       	  <h3 className="col">Play Nine</h3>
-          <Timer time={timerTime}/>
+          <Timer time={timerTime}
+                 calculateSecondsAsMMSS={this.calculateSecondsAsMMSS}/>
         </div>
         <hr />
         <div className="row">
-        	<Stars numberOfStars={randomNumberOfStars} />
+          <Stars numberOfStars={randomNumberOfStars} />         
           <Button selectedNumbers={selectedNumbers} 
                   redraws={redraws}
                   checkAnswer={this.checkAnswer}
@@ -226,7 +249,11 @@ class Game extends React.Component {
           <Numbers selectedNumbers={selectedNumbers} 
         	         selectNumber={this.selectNumber}
                    usedNumbers={usedNumbers}/>
-        }      
+        } 
+        <br /> 
+        <div>
+          <button type="button" className ="btn center-block" onClick={this.startTimer}>Play</button>
+        </div>  
       </div>
     );
   };
