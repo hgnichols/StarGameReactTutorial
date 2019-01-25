@@ -48,20 +48,25 @@ const Stars = (props) => {
 
 const Button = (props) => {
   let button;
+  const buttonClassName = (gamestarted) => {
+  	if(!gamestarted) {
+    	return 'selected';
+    }
+  };
 
   switch(props.answerIsCorrect) {
     case true:
-      button = <button className="btn btn-success" onClick={props.acceptAnswer}>
+      button = <button className={`btn btn-success ${buttonClassName(props.gameStarted)}`} onClick={props.acceptAnswer}>
         <FontAwesomeIcon className="fa fa-check" icon="check"/>
       </button>;
       break;
     case false:
-      button = <button className="btn btn-danger">
+      button = <button className={`btn btn-danger ${buttonClassName(props.gameStarted)}`}>
         <FontAwesomeIcon className="fa fa-times" icon="times"/>
       </button>;
       break;
     default:
-      button = <button className="btn" onClick={props.checkAnswer} disabled={props.selectedNumbers.length === 0}>
+      button = <button className={`btn ${buttonClassName(props.gameStarted)}`} onClick={props.checkAnswer} disabled={props.selectedNumbers.length === 0}>
         =
       </button>;
       break;
@@ -94,7 +99,7 @@ const Numbers = (props) => {
   	if(props.usedNumbers.indexOf(number) >= 0) {
     	return 'used';
     }
-    if(props.selectedNumbers.indexOf(number) >= 0) {
+    if(props.selectedNumbers.indexOf(number) >= 0 || !props.gameStarted) {
     	return 'selected';
     }
   };
